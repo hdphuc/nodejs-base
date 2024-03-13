@@ -1,0 +1,13 @@
+# Database configuration (choose one based on your preference)
+DB_TYPE=mysql  # or DB_TYPE=mysql
+PORT=3000
+
+# MongoDB configuration
+MONGODB_URI=''
+
+# MySQL configuration
+MYSQL_HOST=localhost
+MYSQL_USER=root
+MYSQL_PASSWORD=
+MYSQL_DATABASE=develop
+MYSQL_PORT=3306
