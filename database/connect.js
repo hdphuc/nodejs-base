@@ -7,10 +7,8 @@ async function connectToDatabase() {
 
   try {
     if (DB_TYPE === 'mongo') {
-      console.log('mongo');
       return await connectToMongo();
     } else if (DB_TYPE === 'mysql') {
-      console.log('mysql');
       return await connectToMySQL();
     } else {
       throw new Error('Invalid DB_TYPE environment variable');

@@ -1,26 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
+const Post = require('../models/post');
 
-// Get all Users
+// Get all Posts
 router.get('/', async (req, res) => {
     try {
-        const Users = await User.findAll();
-        res.json(Users);
+        const Posts = await Post.findAll();
+        res.json(Posts);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
 
-// Add a User
+// Add a Post
 router.post('/', async (req, res) => {
     try {
-        const newUser = await User.create({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
+        const newPost = await Post.create({
+          title: req.body.title,
+          author: req.body.author,
+          published_date: req.body.published_date,
         });
-        res.status(201).json(newUser);
+        res.status(201).json(newPost);
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
@@ -30,24 +30,24 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const {id} = req.params
-        const findUser = await User.findByPk(id);
-        res.json(findUser);
+        const findPost = await Post.findByPk(id);
+        res.json(findPost);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
 
-// Update a User
+// Update a Post
 router.post('/:id', async (req, res) => {
     try {
         const {id} = req.params
-        const userUpdate = await User.findByPk(id);
+        const PostUpdate = await Post.findByPk(id);
 
-        if (!userUpdate) {
-            res.status(404).json('not found user!');
+        if (!PostUpdate) {
+            res.status(404).json('not found Post!');
         }
-        const updateUser = await userUpdate.update(req.body);
-        res.status(201).json(updateUser);
+        const updatePost = await PostUpdate.update(req.body);
+        res.status(201).json(updatePost);
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
