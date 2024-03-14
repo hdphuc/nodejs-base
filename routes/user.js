@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const authenticate = require('../middleware/authenticate');
+const jwt = require('jsonwebtoken');
+const {ACCESS_TOKEN_SECRET} = process.env;
+const secretKey = ACCESS_TOKEN_SECRET;
 
 // Get all Users
-router.get('/', async (req, res) => {
+router.get('/', authenticate,  async (req, res) => {
     try {
         const Users = await User.findAll();
         res.json(Users);
@@ -13,7 +17,7 @@ router.get('/', async (req, res) => {
 });
 
 // Add a User
-router.post('/', async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
     try {
         const newUser = await User.create({
             firstName: req.body.firstName,
@@ -27,7 +31,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get detail
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, async (req, res) => {
     try {
         const {id} = req.params
         const findUser = await User.findByPk(id);
@@ -38,7 +42,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update a User
-router.post('/:id', async (req, res) => {
+router.post('/:id', authenticate, async (req, res) => {
     try {
         const {id} = req.params
         const userUpdate = await User.findByPk(id);
@@ -52,5 +56,6 @@ router.post('/:id', async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 });
+
 
 module.exports = router;

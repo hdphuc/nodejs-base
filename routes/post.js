@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/post');
+const authenticate = require('../middleware/authenticate');
+const User = require('../models/user');
 
 // Get all Posts
-router.get('/', async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
     try {
         const Posts = await Post.findAll();
         res.json(Posts);
@@ -13,12 +15,12 @@ router.get('/', async (req, res) => {
 });
 
 // Add a Post
-router.post('/', async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
     try {
         const newPost = await Post.create({
           title: req.body.title,
           author: req.body.author,
-          published_date: req.body.published_date,
+          published_date: req.body.published_date
         });
         res.status(201).json(newPost);
     } catch (err) {
@@ -27,7 +29,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get detail
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, async (req, res) => {
     try {
         const {id} = req.params
         const findPost = await Post.findByPk(id);
@@ -38,7 +40,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update a Post
-router.post('/:id', async (req, res) => {
+router.post('/:id', authenticate, async (req, res) => {
     try {
         const {id} = req.params
         const PostUpdate = await Post.findByPk(id);
